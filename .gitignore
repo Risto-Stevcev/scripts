@@ -1,0 +1,8 @@
+node_modules
+*.*~
+*.*#
+.log
+Session.vim
+log
+logs
+whoshiring.sqlite

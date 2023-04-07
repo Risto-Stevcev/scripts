@@ -1,0 +1,4 @@
+#!/bin/sh
+exec 2>&1
+exec clamd
+#exec setuidgid clamav softlimit -a 40000000 clamd

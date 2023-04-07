@@ -29,6 +29,16 @@ $comment_csv"]
     return $csv
 }
 
+proc create_sqlite_from_csv {} {
+    exec sqlite3 whoshiring.sqlite "create table if not exists whoshiring (item_id, ad)" ".mode csv" ".import whoshiring.csv whoshiring" ".exit"
+}
+
+proc create_html_from_db {} {
+    set html [open "whoshiring.html" "w"]
+    puts $html [exec sqlite3 whoshiring.sqlite "select '<li><label>' || item_id || '<input type=\"checkbox\" /></label><p>' || ad || '</p></li>' from whoshiring"]
+    close $html
+}
+
 proc run {} {
     set whoshiring [open "whoshiring.csv" "w"]
     set comment_ids [get_comment_ids 34983767]
@@ -36,4 +46,7 @@ proc run {} {
     close $whoshiring
 }
 
-run
+# Main method (or load w/ `source whoshiring.tcl` in tclsh)
+if {[info exists argv0] && [file tail [info script]] eq [file tail $argv0]} {
+    run
+}

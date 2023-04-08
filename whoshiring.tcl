@@ -1,5 +1,12 @@
 #!/bin/tclsh
 
+namespace eval ::whoshiring {
+    # Export commands
+    namespace export create_csv create_sqlite_from_csv create_html_from_sqlite
+    namespace ensemble create
+    variable whoshiring_id 35424807
+}
+
 proc get_item {item_id} {
     exec curl -s "https://hacker-news.firebaseio.com/v0/item/$item_id.json?print=pretty"
 }
@@ -29,21 +36,28 @@ $comment_csv"]
     return $csv
 }
 
-proc create_sqlite_from_csv {} {
+proc ::whoshiring::create_sqlite_from_csv {} {
     exec sqlite3 whoshiring.sqlite "create table if not exists whoshiring (item_id, ad)" ".mode csv" ".import whoshiring.csv whoshiring" ".exit"
 }
 
-proc create_html_from_db {} {
+proc ::whoshiring::create_html_from_sqlite {} {
     set html [open "whoshiring.html" "w"]
     puts $html [exec sqlite3 whoshiring.sqlite "select '<li><label>' || item_id || '<input type=\"checkbox\" /></label><p>' || ad || '</p></li>' from whoshiring"]
     close $html
 }
 
-proc run {} {
+proc ::whoshiring::create_csv {} {
+    variable whoshiring_id
     set whoshiring [open "whoshiring.csv" "w"]
-    set comment_ids [get_comment_ids 34983767]
+    set comment_ids [get_comment_ids $whoshiring_id]
     puts $whoshiring [get_comments $comment_ids]
     close $whoshiring
+}
+
+proc run {} {
+    whoshiring create_csv
+    whoshiring create_sqlite_from_csv
+    whoshiring create_html_from_sqlite
 }
 
 # Main method (or load w/ `source whoshiring.tcl` in tclsh)

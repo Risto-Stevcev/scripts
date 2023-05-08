@@ -54,3 +54,9 @@ $ sudo mksquashfs fin /full_path/filesystem.squashfs
 ```
 $ sudo umount fin fm
 ```
+
+### Base Conversion Calc
+
+```
+echo "obase=10; ibase=2; 10101010" | bc
+```

@@ -1,4 +1,7 @@
 #!/bin/sh
 
+export HOME=/home/risto
+cd $HOME
+
 exec 2>&1
-exec emacs --fg-daemon
+exec emacs --fg-daemon=emacsd

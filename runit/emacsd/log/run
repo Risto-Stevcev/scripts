@@ -1,0 +1,2 @@
+#!/bin/sh
+exec vlogger -t emacsd -p daemon.notice

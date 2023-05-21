@@ -4,4 +4,5 @@ export HOME=/home/risto
 cd $HOME
 
 exec 2>&1
+echo "Starting emacsd..."
 exec emacs --fg-daemon=emacsd

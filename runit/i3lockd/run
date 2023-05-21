@@ -1,8 +1,12 @@
 #!/bin/sh
-exec 2>&1
-exec chpst -u risto ./i3lockd.sh
 
-#DISPALY=:0
-#XAUTHORITY=/run/user/1000/gdm/Xauthority
-#exec runuser -u risto -- xss-lock --transfer-sleep-lock -- xautolock -time 15 -locker 'i3lock --nofork'
-#exec xss-lock --transfer-sleep-lock -- xautolock -time 15 -locker 'i3lock --nofork'
+exec 2>&1
+
+export DISPLAY=":0"
+#export XAUTHORITY=/run/user/1000/gdm/Xauthority
+
+#export DISPLAY=$(w -suh | grep -v pts | head -1 | awk '{print $2}')
+#export XAUTHORITY=$(xauth info | grep "Authority file:" | awk '{print $3}')
+
+echo "Starting i3lockd..."
+exec xss-lock --transfer-sleep-lock -- i3lock

@@ -60,3 +60,17 @@ $ sudo umount fin fm
 ```
 echo "obase=10; ibase=2; 10101010" | bc
 ```
+
+### Xorg
+
+#### View settings, including for screensaver
+
+```
+xset q
+```
+
+#### Turn on screensaver
+
+```
+xset s on
+```

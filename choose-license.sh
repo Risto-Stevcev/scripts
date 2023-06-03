@@ -1,0 +1,30 @@
+#!/bin/bash
+
+licenses=("Apache-2.0" "BSD-3-Clause" "MIT" "GPL-v3" "LGPL-v3" "AGPL-v3")
+
+RESULT=$(
+    dialog --title "Generate a license:" \
+           --inputbox --stdout "Author:" 10 10 "$(git config --get user.name)" \
+           --and-widget --inputbox --stdout "Year:" 10 5 "$(date +"%Y")" \
+           --and-widget --inputbox --stdout "Program Name:" 10 5 "$(jq -r '.name' package.json 2>/dev/null)" \
+           --and-widget --inputbox --stdout "Description:" 10 5 "$(jq -r '.description' package.json 2>/dev/null)" \
+           --and-widget --default-item 2 --menu --stdout "License:" 0 0 0 \
+           1 "Apache 2.0" 2 "BSD-3-Clause" 3 "MIT" 4 "GPL-v3" 5 "LGPL-v3" 6 "AGPL-v3"
+)
+
+AUTHOR=$(echo "$RESULT" | awk -F'\t' '{printf "%s", $1}')
+YEAR=$(echo "$RESULT" | awk -F'\t' '{printf "%d", $2}')
+PROGRAM=$(echo "$RESULT" | awk -F'\t' '{printf "%s", $3}')
+DESCRIPTION=$(echo "$RESULT" | awk -F'\t' '{printf "%s", $4}')
+LICENSE=$(echo "$RESULT" | awk -F'\t' '{printf "%d", $5}')
+
+cd licenses
+
+#ls "${licenses[$LICENSE - 1]}.txt"
+#echo "Author: '$AUTHOR', Year: '$YEAR', License: '$LICENSE'."
+
+sed -e "s/<fullname>/$AUTHOR/" \
+    -e "s/<year>/$YEAR/" \
+    -e "s/<program>/$PROGRAM/" \
+    -e "s/<description>/$DESCRIPTION/" \
+    "${licenses[$LICENSE - 1]}.txt"

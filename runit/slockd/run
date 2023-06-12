@@ -1,0 +1,10 @@
+#!/bin/sh
+
+exec 2>&1
+
+export DISPLAY=":0"
+#export SLOCK=$(whereis slock)
+
+echo "Starting slockd..."
+
+exec xss-lock --transfer-sleep-lock slock

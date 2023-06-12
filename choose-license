@@ -1,5 +1,8 @@
 #!/bin/bash
 
+SCRIPT=$(readlink -f "$0")
+SCRIPTDIR=$(dirname "$SCRIPT")
+
 licenses=("Apache-2.0" "BSD-3-Clause" "MIT" "GPL-v3" "LGPL-v3" "AGPL-v3")
 
 RESULT=$(
@@ -18,7 +21,7 @@ PROGRAM=$(echo "$RESULT" | awk -F'\t' '{printf "%s", $3}')
 DESCRIPTION=$(echo "$RESULT" | awk -F'\t' '{printf "%s", $4}')
 LICENSE=$(echo "$RESULT" | awk -F'\t' '{printf "%d", $5}')
 
-cd licenses
+cd "$SCRIPTDIR/licenses"
 
 #ls "${licenses[$LICENSE - 1]}.txt"
 #echo "Author: '$AUTHOR', Year: '$YEAR', License: '$LICENSE'."

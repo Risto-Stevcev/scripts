@@ -74,3 +74,24 @@ xset q
 ```
 xset s on
 ```
+
+And the number of seconds (ex: 10 mins):
+
+```
+xset s 600
+```
+
+#### Change keyboard layout
+
+```
+setxkbmap us
+```
+
+#### Cgroups (libcgroup)
+
+```
+cgcreate -t risto:risto -a risto:risto -g memory,cpu:surfcg
+cgget -g memory:surfcg
+echo 250000000 > /sys/fs/cgroup/memory/surfcg/memory.limit_in_bytes
+cgexec -g memory,cpu:surfcg surf
+```

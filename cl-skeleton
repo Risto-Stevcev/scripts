@@ -14,7 +14,18 @@ PROJECT_NAME=$(echo "$RESULT" | cut -d $'\t' -f 1)
 AUTHOR=$(echo "$RESULT" | cut -d $'\t' -f 2)
 LICENSE=$(echo "$RESULT" | cut -d $'\t' -f 3)
 
-cat << EOF
+if [ "$1" = "-p" ]; then
+
+    cat << EOF
+(defpackage $PROJECT_NAME
+  (:use :cl))
+
+(in-package :$PROJECT_NAME)
+EOF
+
+else
+
+    cat << EOF
 (defsystem "$PROJECT_NAME"
   :class :package-inferred-system
   :author "$AUTHOR"
@@ -22,3 +33,5 @@ cat << EOF
   :depends-on ()
   :components ((:file "$PROJECT_NAME"))
 EOF
+
+fi

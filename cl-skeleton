@@ -1,0 +1,24 @@
+#!/bin/bash
+
+LICENSES=("Apache-2.0" "BSD-3-Clause" "MIT" "GPL-v3" "LGPL-v3" "AGPL-v3")
+
+RESULT=$(
+    dialog --title "Generate a CL project:" \
+           --inputbox --stdout "Project name:" 10 10 "$(basename `pwd`)" \
+           --inputbox --stdout "Author:" 10 10 "$(git config --get user.name)" \
+           --and-widget --default-item 2 --menu --stdout "License:" 0 0 0 \
+           1 "Apache 2.0" 2 "BSD-3-Clause" 3 "MIT" 4 "GPL-v3" 5 "LGPL-v3" 6 "AGPL-v3"
+)
+
+PROJECT_NAME=$(echo "$RESULT" | cut -d $'\t' -f 1)
+AUTHOR=$(echo "$RESULT" | cut -d $'\t' -f 2)
+LICENSE=$(echo "$RESULT" | cut -d $'\t' -f 3)
+
+cat << EOF
+(defsystem "$PROJECT_NAME"
+  :class :package-inferred-system
+  :author "$AUTHOR"
+  :licence "${LICENSES[$LICENSE -1]}"
+  :depends-on ()
+  :components ((:file "$PROJECT_NAME"))
+EOF

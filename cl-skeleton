@@ -31,7 +31,7 @@ else
   :author "$AUTHOR"
   :licence "${LICENSES[$LICENSE -1]}"
   :depends-on ()
-  :components ((:file "$PROJECT_NAME"))
+  :components ((:file "$PROJECT_NAME")))
 EOF
 
 fi
